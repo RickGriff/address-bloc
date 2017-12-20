@@ -37,11 +37,7 @@ RSpec.describe AddressBook do
       expect(new_entry.email).to eq('augusta.king@lovelace.com')
     end
   end
-  
-<<<<<<< HEAD
-  
-=======
->>>>>>> checkpoint-19-models
+
   describe "#remove_entry" do
     it "removes one entry from the Address Book" do
       book = AddressBook.new
@@ -51,13 +47,8 @@ RSpec.describe AddressBook do
       
       expect(book.entries.size).to eq(1)
     end
-      
-      
-<<<<<<< HEAD
-    it "removes the correct entry from the book, doesn't remove others" do
-=======
+    
     it "removes the correct entry from the book and doesn't remove others" do
->>>>>>> checkpoint-19-models
       book = AddressBook.new
       book.add_entry('Ada Lovelace', '010.012.1815', 'augusta.king@lovelace.com')
       book.add_entry('John Doe', '123.456.7889', 'john.doe@gmail.com')
