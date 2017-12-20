@@ -38,7 +38,6 @@ RSpec.describe AddressBook do
     end
   end
   
-  
   describe "#remove_entry" do
     it "removes one entry from the Address Book" do
       book = AddressBook.new
