@@ -79,9 +79,38 @@ class MenuController
   end
   
   def search_entries
+    print "Search by name: "
+    name = gets.chomp
+    a_match = address_book.binary_search(name)
+    system "clear"
+    
+    if a_match 
+      puts a_match.to_s
+      search_submenu(a_match)
+    else
+      puts "No match found for #{name}"
+    end
   end
   
-  def read_csv
+  def read_csv    
+    #This method is used to interface between the user (via the menu), and the import_from_csv method of the actual AddressBook model.
+      print "Enter CSV file to import: "
+      file_name =gets.chomp
+    
+    if file_name.empty?  #check user has entered something for file_name
+      system "clear"
+      puts "No CSV file read"
+      main_menu
+    end
+    
+    begin
+      entry_count = address_book.import_from_csv(file_name).count   #imports the CSV named file_name to address_book, and initializes it's entry_count
+      system "clear"
+      puts "#{entry_count} new entries added from #{file_name}"
+    rescue    #if no valid file name is given and an exception thrown, notify the user and get input again
+      puts "#{file_name} is not a valid CSV file, please enter the name of a valid CSV file"
+      read_csv
+    end
   end
   
   #Assignment 20 Exercise
@@ -121,8 +150,11 @@ class MenuController
       when "n"
         
       when "d"
+        delete_entry(entry)
         
       when "e"
+        edit_entry(entry)
+        entry_submenu(entry)
         
       when "m"
         system "clear"
@@ -133,6 +165,56 @@ class MenuController
         puts "#{selection} is not a valid input"
         entry_submenu(entry)
     end
+  end
+  
+  def search_submenu(entry)
+    puts "\nd - delete this entry"
+    puts "e - edit this entry"
+    puts "m - return to the main menu"
+    
+    selection = gets.chomp
+    
+    case selection
+      when "d"
+        system "clear"
+        delete_entry(entry)
+        main_menu
+      when "e"
+        edit_entry(entry)
+        system "clear"
+        main_menu
+      when "m"
+        system "clear"
+        main_menu
+      else
+        system "clear"
+        puts "#{selection} is not a valid input"
+        puts entry.to_s
+        search_submenu(entry)
+    end
+  end
+  
+  def delete_entry(entry)
+    address_book.entries.delete(entry)
+    puts "#{entry.name} has been deleted"
+  end
+  
+  def edit_entry(entry)
+    print "Updated name: "
+    name = gets.chomp
+    print "Updated phone number: "
+    phone_number = gets.chomp
+    print "Updated email: "
+    email = gets.chomp
+     
+    #update the attributes if user has provided them
+    entry.name = name if !name.empty?
+    entry.phone_number = phone_number if !phone_number.empty?
+    entry.email = email if !email.empty?
+    system "clear"
+    
+    puts "Updated entry:"
+    puts entry
   end
 end
     
