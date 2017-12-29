@@ -65,8 +65,6 @@ class AddressBook
   
   def iterative_search(name)
   end
-  
-  
 end
 
 
