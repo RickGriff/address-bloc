@@ -15,7 +15,8 @@ class MenuController
     puts "3 - Search for an entry"
     puts "4 - Import entries from a CSV"
     puts "5 - View Entry number n"
-    puts "6 - Exit"
+    puts "6 - Delete all entries"
+    puts "7 - Exit"
     print "Enter your selection: "
     
     selection =gets.to_i
@@ -43,6 +44,9 @@ class MenuController
         view_specific_entry
         main_menu
       when 6
+        nuke_all_entries
+        main_menu
+      when 7
         puts "Good-bye!"
         exit(0)
       
@@ -93,7 +97,7 @@ class MenuController
   end
   
   def read_csv    
-    #This method is used to interface between the user (via the menu), and the import_from_csv method of the actual AddressBook model.
+    #This method is used to interface between the user (via the menu), and the import_from_csv method of the AddressBook model.
       print "Enter CSV file to import: "
       file_name =gets.chomp
     
@@ -104,7 +108,7 @@ class MenuController
     end
     
     begin
-      entry_count = address_book.import_from_csv(file_name).count   #imports the CSV named file_name to address_book, and initializes it's entry_count
+      entry_count = address_book.import_from_csv(file_name).count   #import the CSV named file_name to address_book, and initialize it's entry_count
       system "clear"
       puts "#{entry_count} new entries added from #{file_name}"
     rescue    #if no valid file name is given and an exception thrown, notify the user and get input again
@@ -215,6 +219,28 @@ class MenuController
     
     puts "Updated entry:"
     puts entry
+  end
+  
+  #Assignment 23
+  def nuke_all_entries
+    puts "Do you want to delete ALL the entries?"
+    puts "y - Delete all entries"
+    puts "n - Return to main menu"
+    
+    input = gets.chomp
+    if input == 'y'
+      count = address_book.entries.count
+      address_book.entries.clear
+      puts "All #{count} entries have been deleted"
+      
+    elsif input == 'n'
+      puts "Returning to the main menu"
+      main_menu
+      
+    else
+      puts "Sorry, that wasn't a valid choice."
+      nuke_all_entries
+    end
   end
 end
     
